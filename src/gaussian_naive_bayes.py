@@ -1,8 +1,9 @@
 import numpy as np
+import pickle
 
 # Implementation of gaussian naive bayes classifier from scratch
 # @author: Rayhan Maheswara Pramanda
-# @date: 2024-12-02
+# @date: 2024-12-03
 
 class GaussianNaiveBayes:
     '''
@@ -75,3 +76,26 @@ class GaussianNaiveBayes:
 
         return y_pred
 
+    def save_model(self, filename):
+        '''
+        Save model to a file
+
+        Parameters:
+            filename -> Name of model file
+        '''
+        with open(filename, 'wb') as file:
+            pickle.dump(self, file)
+        print(f'Model saved as {filename}')
+
+    def load_model(filename):
+        '''
+        Load model from a file
+
+        Parameters:
+            filename -> Name of model file
+        '''
+        with open(filename, 'rb') as file:
+            model = pickle.load(file)
+        print(f'Model {filename} has been loaded')
+        
+        return model
