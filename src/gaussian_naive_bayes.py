@@ -4,8 +4,6 @@ import numpy as np
 # @author: Rayhan Maheswara Pramanda
 # @date: 2024-12-02
 
-import numpy as np
-
 class GaussianNaiveBayes:
     '''
     Gaussian Naive Bayes classifier implementation from scratch
