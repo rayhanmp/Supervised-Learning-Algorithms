@@ -10,7 +10,7 @@ class GaussianNaiveBayes:
     '''
     Gaussian Naive Bayes classifier implementation from scratch
     '''
-    def __init__(self, var_smoothing = 1e-9) -> None:
+    def __init__(self, var_smoothing = 1e-9):
         self.classes = []
         self.mean = {}
         self.std = {}
@@ -20,7 +20,7 @@ class GaussianNaiveBayes:
         # Variance can be 0 if the data points are identical for a certain class
         self.var_smoothing = var_smoothing
 
-    def fit(self, x, y) -> None:
+    def fit(self, x, y):
         '''
         Fit model to the training data
 
@@ -36,7 +36,7 @@ class GaussianNaiveBayes:
             self.std[c] = np.maximum(x_c.std(axis=0), self.var_smoothing) # If the standard deviation is lower than the smoothing value (could be zero), use the smoothing value instead
             self.priors[c] = len(x_c) / len(x)
 
-    def calculate_likelihood(self, x, mean, std) -> np.ndarray:
+    def calculate_likelihood(self, x, mean, std):
         '''
         Calculate likelihood of the data given the mean and standard deviation using Gaussian Probability Density Function
 
@@ -44,21 +44,15 @@ class GaussianNaiveBayes:
             x -> Data point (features)
             mean -> Mean for each feature
             std -> Standard deviation for each feature
-
-        Returns:
-            np.ndarray -> Likelihood of the data given the mean and standard deviation
         '''
         return (1/(std*np.sqrt(2*np.pi)))*np.exp(-((x-mean)**2)/(2*std**2))
 
-    def calculate_posterior(self, x) -> dict:
+    def calculate_posterior(self, x):
         '''
         Calculate posterior probabilities for a single data point
 
         Parameters:
             x -> Data point
-
-        Returns:
-            np.ndarray -> Posterior probabilities for each class
         '''
         posteriors = {}
 
@@ -68,15 +62,12 @@ class GaussianNaiveBayes:
 
         return posteriors
 
-    def predict(self, x) -> list:
+    def predict(self, x):
         '''
         Predict class labels for the input data
 
         Parameters:
             x -> Test data
-
-        Returns:
-            list -> Predicted class
         '''
         y_pred = [] 
 
