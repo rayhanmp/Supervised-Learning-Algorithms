@@ -31,9 +31,9 @@ Python3 with Numpy.
 ## 👨‍💻 Contributors
 | NIM | Name | Contributions |
 |:---:|:----:|:----:|
-|13221011| Jazila Faza A. N. | Data understading and data preprocessing |
+|13221011| Jazila Faza A. N. | Data understanding and data preprocessing |
 |13221055| Ahmad Hafidz A. | ID3 algorithm |
-|13221065| Caitleen Devina | Data understading and data preprocessing |
+|13221065| Caitleen Devina | Data understanding and data preprocessing |
 |18221130| Rayhan Maheswara P. | Gaussian Naive Bayes algorithm |
 |18321008| Jasmine Callista A. I. | K-Nearest Neighbour algorithm |
 
