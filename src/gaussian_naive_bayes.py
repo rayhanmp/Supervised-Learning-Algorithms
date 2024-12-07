@@ -3,7 +3,7 @@ import pickle
 
 # Implementation of gaussian naive bayes classifier from scratch
 # @author: Rayhan Maheswara Pramanda
-# @date: 2024-12-03
+# @date: 2024-12-07
 
 class GaussianNaiveBayes:
     '''
@@ -27,6 +27,10 @@ class GaussianNaiveBayes:
             x -> Training data (features)
             y -> Target values (class labels)
         '''
+
+        if len(x) != len(y): # Check if the number of samples in the features and target are the same
+            raise ValueError('Length of x and y must be the same')
+
         self.classes = np.unique(y) # Get unique class labels
 
         for c in self.classes: 
@@ -35,31 +39,33 @@ class GaussianNaiveBayes:
             self.std[c] = np.maximum(x_c.std(axis=0), self.var_smoothing) # If the standard deviation is lower than the smoothing value (could be zero), use the smoothing value instead
             self.priors[c] = len(x_c) / len(x)
 
-    def calculate_likelihood(self, x, mean, std):
+    def calculate_log_likelihood(self, x, mean, std):
         '''
-        Calculate likelihood of the data given the mean and standard deviation using Gaussian Probability Density Function
+        Calculate log likelihood of the data given the mean and standard deviation using Gaussian Probability Density Function
+        Log likelihood is used to avoid underflow when multiplying small probabilities
 
         Parameters:
             x -> Data point (features)
             mean -> Mean for each feature
             std -> Standard deviation for each feature
         '''
-        return (1/(std*np.sqrt(2*np.pi)))*np.exp(-((x-mean)**2)/(2*std**2))
+        return (-0.5 * np.sum(np.log(2 * np.pi * std**2))) - np.sum(((x - mean)**2) / (2 * std**2))
+        
 
-    def calculate_posterior(self, x):
+    def calculate_log_posterior(self, x):
         '''
         Calculate posterior probabilities for a single data point
 
         Parameters:
             x -> Data point
         '''
-        posteriors = {}
+        log_posteriors = {}
 
         for c in self.classes: 
-            likelihood = np.prod(self.calculate_likelihood(x, self.mean[c], self.std[c])) # Compute the joint likelihood P(x | c)
-            posteriors[c] = self.priors[c] * likelihood
+            log_likelihood = self.calculate_log_likelihood(x, self.mean[c], self.std[c]) # Compute the log likelihood P(x | c)
+            log_posteriors[c] = np.log(self.priors[c]) + log_likelihood
 
-        return posteriors
+        return log_posteriors
 
     def predict(self, x):
         '''
@@ -71,8 +77,8 @@ class GaussianNaiveBayes:
         y_pred = [] 
 
         for item in x:
-            posteriors = self.calculate_posterior(item)
-            y_pred.append(max(posteriors, key=posteriors.get)) # Get the class with the highest posterior probability
+            log_posteriors = self.calculate_log_posterior(item)
+            y_pred.append(max(log_posteriors, key=log_posteriors.get)) # Get the class with the highest posterior probability
 
         return y_pred
 
