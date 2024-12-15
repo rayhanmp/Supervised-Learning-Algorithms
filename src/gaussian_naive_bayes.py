@@ -33,7 +33,7 @@ class GaussianNaiveBayes:
 
         self.classes = np.unique(y) # Get unique class labels
 
-        for c in self.classes: 
+        for c in self.classes:
             x_c = x[y == c] # Get data points for the current class
             self.mean[c] = x_c.mean(axis=0)
             self.std[c] = np.maximum(x_c.std(axis=0), self.var_smoothing) # If the standard deviation is lower than the smoothing value (could be zero), use the smoothing value instead
@@ -50,7 +50,7 @@ class GaussianNaiveBayes:
             std -> Standard deviation for each feature
         '''
         return (-0.5 * np.sum(np.log(2 * np.pi * std**2))) - np.sum(((x - mean)**2) / (2 * std**2))
-        
+
 
     def calculate_log_posterior(self, x):
         '''
@@ -61,7 +61,7 @@ class GaussianNaiveBayes:
         '''
         log_posteriors = {}
 
-        for c in self.classes: 
+        for c in self.classes:
             log_likelihood = self.calculate_log_likelihood(x, self.mean[c], self.std[c]) # Compute the log likelihood P(x | c)
             log_posteriors[c] = np.log(self.priors[c]) + log_likelihood
 
@@ -74,7 +74,8 @@ class GaussianNaiveBayes:
         Parameters:
             x -> Test data
         '''
-        y_pred = [] 
+        x = np.array(x, dtype=np.float64)  # Ensure x is a numpy array of floats
+        y_pred = []
 
         for item in x:
             log_posteriors = self.calculate_log_posterior(item)
@@ -103,5 +104,5 @@ class GaussianNaiveBayes:
         with open(filename, 'rb') as file:
             model = pickle.load(file)
         print(f'Model {filename} has been loaded')
-        
+
         return model
