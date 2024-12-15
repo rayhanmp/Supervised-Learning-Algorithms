@@ -171,20 +171,20 @@ def id3_train(dataframe, target_feature):
 
 def use_id3_model(id3_model, row_data):
     if not isinstance(id3_model, dict):  # Base case: leaf node
-        print(f"Reached leaf: {id3_model}")
+        # print(f"Reached leaf: {id3_model}")
         return id3_model
 
     for feature, branch in id3_model.items():
-        print(f"Checking feature: {feature}")
+        # print(f"Checking feature: {feature}")
         if feature in row_data.index:
             value = row_data[feature]
-            print(f"Feature '{feature}' value: {value}")
+            # print(f"Feature '{feature}' value: {value}")
             if value not in branch:
-                print(f"Value '{value}' not found in branch: {branch}")
+                # print(f"Value '{value}' not found in branch: {branch}")
                 raise ValueError(f"Unexpected value '{value}' for feature '{feature}'")
             return use_id3_model(branch[value], row_data.drop(feature))
         else:
-            print(f"Feature '{feature}' not found in row data: {row_data.index}")
+            # print(f"Feature '{feature}' not found in row data: {row_data.index}")
             raise ValueError("Feature not found in row data")
 
 def id3_predict(threshold, id3_model, dataframe):
@@ -200,7 +200,7 @@ def id3_predict(threshold, id3_model, dataframe):
         try:
             predict.append(use_id3_model(id3_model, row_data))
         except ValueError as e:
-            print(f"Error in row {i}: {e}")
+            # print(f"Error in row {i}: {e}")
             predict.append(None)  # Handle prediction errors gracefully
 
     return predict
